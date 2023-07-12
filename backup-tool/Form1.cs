@@ -43,19 +43,14 @@ namespace backup_tool
 
         private void runButton_Click(object sender, EventArgs e)
         {
+            string sourcePath = this.sourceFolderTextbox.Text;
+            string destPath = this.targetFolderTextbox.Text;
             //recursively print all files from the source folder
-            DirectoryInfo d = new DirectoryInfo(this.sourceFolderTextbox.Text);
-            if (d.Exists)
+            if (Directory.Exists(sourcePath) && Directory.Exists(destPath))
             {
                 Console.WriteLine("Directory exists");
-                foreach (var file in d.EnumerateFiles()) 
-                { 
-                    Console.WriteLine(file.FullName);
-                } 
-                /*foreach (var file in d.GetFiles())
-                {
-                    Console.WriteLine(file.FullName);
-                }*/
+                var fileList = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories);
+                FileUtils.CopyToDirectory(sourcePath, destPath);
             }
         }
     }
