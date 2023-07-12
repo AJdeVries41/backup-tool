@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -48,9 +49,21 @@ namespace backup_tool
             //recursively print all files from the source folder
             if (Directory.Exists(sourcePath) && Directory.Exists(destPath))
             {
-                Console.WriteLine("Directory exists");
                 var fileList = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories);
-                FileUtils.CopyToDirectory(sourcePath, destPath);
+                var fileInfoList = fileList.Select(x => new FileInfo(x)).ToList();
+
+                
+                var exts = FileUtils.GetExtensions(fileList);
+                Console.WriteLine($"There are {exts.Count} unique file types in {sourcePath}");
+                foreach ( var ext in exts )
+                {
+                    Console.WriteLine($"{ext}");
+                }
+
+                var sortedExtsBySize = FileUtils.ExtensionToFilesize(fileInfoList);
+
+                return;
+
             }
         }
     }

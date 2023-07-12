@@ -24,9 +24,9 @@ namespace backup_tool
 
             foreach (FileInfo file in sourceDir.GetFiles())
             {
-                Console.WriteLine(file.Name);
                 string targetFilePath = Path.Combine(destination, file.Name);
-                file.CopyTo(targetFilePath);
+                //Default option is to allow overwriting with the new version
+                file.CopyTo(targetFilePath, true);
             }
 
             //Recursively copy each subdirectory to the destination folder
@@ -36,6 +36,39 @@ namespace backup_tool
                 string destSubdirLoc = Path.Combine(destination, subDir.Name);
                 CopyToDirectory(subDir.FullName, destSubdirLoc);
             }
+        }
+
+        public static List<KeyValuePair<string, long>> ExtensionToFilesize(List<FileInfo> files)
+        {
+            Dictionary<string, long> result = new Dictionary<string, long>();
+            foreach (var file in files)
+            {
+                var ext = Path.GetExtension(file.FullName);
+                if (!result.ContainsKey(ext))
+                {
+                    result[ext] = file.Length;
+                }
+                else
+                {
+                    result[ext] += file.Length;
+                }
+            }
+            var resultAsList = result.OrderBy(x => x.Value).ToList();
+            return resultAsList;
+        }
+
+        public static List<string> GetExtensions(IEnumerable<string> fileList)
+        {
+            var result = new List<string>();
+            foreach (string file in fileList)
+            {
+                var ext = Path.GetExtension(file);
+                if (!result.Contains(ext))
+                {
+                    result.Add(ext);
+                }
+            }
+            return result;
         }
     }
 }
