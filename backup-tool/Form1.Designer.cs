@@ -34,6 +34,7 @@
             this.targetFolderButton = new System.Windows.Forms.Button();
             this.runButton = new System.Windows.Forms.Button();
             this.targetFolderTextbox = new System.Windows.Forms.TextBox();
+            this.testButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -80,11 +81,22 @@
             this.targetFolderTextbox.Size = new System.Drawing.Size(158, 22);
             this.targetFolderTextbox.TabIndex = 4;
             // 
+            // testButton
+            // 
+            this.testButton.Location = new System.Drawing.Point(329, 48);
+            this.testButton.Name = "testButton";
+            this.testButton.Size = new System.Drawing.Size(118, 34);
+            this.testButton.TabIndex = 5;
+            this.testButton.Text = "TEST";
+            this.testButton.UseVisualStyleBackColor = true;
+            this.testButton.Click += new System.EventHandler(this.testButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(782, 453);
+            this.Controls.Add(this.testButton);
             this.Controls.Add(this.targetFolderTextbox);
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.targetFolderButton);
@@ -104,5 +116,6 @@
         private System.Windows.Forms.Button targetFolderButton;
         private System.Windows.Forms.Button runButton;
         private System.Windows.Forms.TextBox targetFolderTextbox;
+        private System.Windows.Forms.Button testButton;
     }
 }

@@ -53,8 +53,15 @@ namespace backup_tool
                     result[ext] += file.Length;
                 }
             }
-            var resultAsList = result.OrderBy(x => x.Value).ToList();
+            var resultAsList = result.OrderByDescending(x => x.Value).ToList();
             return resultAsList;
+        }
+
+        public static double ByteToGB(long bytes)
+        {
+            double res = (bytes / (1e9));
+            double rounded = Math.Round(res, 2);
+            return rounded;
         }
 
         public static List<string> GetExtensions(IEnumerable<string> fileList)

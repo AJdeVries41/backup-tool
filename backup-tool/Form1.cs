@@ -66,22 +66,34 @@ namespace backup_tool
 
                 Form2 frm2 = new Form2(sortedExtsBySize);
 
-                // Create a button to add to the new form.
-                Button button1 = new Button();
-                // Set text for the button.
-                button1.Text = "Scrolled Button";
-                // Set the size of the button.
-                button1.Size = new Size(100, 30);
-                // Set the location of the button to be outside the form's client area.
-                button1.Location = new Point(frm2.Size.Width + 200, frm2.Size.Height + 200);
+                return;
 
-                // Add the button control to the new form.
-                frm2.Controls.Add(button1);
-                // Set the AutoScroll property to true to provide scrollbars.
-                frm2.AutoScroll = true;
+            }
+        }
 
-                // Display the new form as a dialog box.
-                frm2.ShowDialog();
+        private void testButton_Click(object sender, EventArgs e)
+        {
+            string sourceFolderExample = @"C:\Users\AJ\Documents\tudelft";
+            string destFolderExample = @"C:\Users\AJ\Documents\backups";
+            this.sourceFolderTextbox.Text = sourceFolderExample;
+            this.targetFolderTextbox.Text = destFolderExample;
+            if (Directory.Exists(sourceFolderExample) && Directory.Exists(destFolderExample))
+            {
+                var fileList = Directory.EnumerateFiles(sourceFolderExample, "*", SearchOption.AllDirectories);
+                var fileInfoList = fileList.Select(x => new FileInfo(x)).ToList();
+
+
+                var exts = FileUtils.GetExtensions(fileList);
+                Console.WriteLine($"There are {exts.Count} unique file types in {sourceFolderExample}");
+                foreach (var ext in exts)
+                {
+                    Console.WriteLine($"{ext}");
+                }
+
+                var sortedExtsBySize = FileUtils.ExtensionToFilesize(fileInfoList);
+
+
+                Form2 frm2 = new Form2(sortedExtsBySize);
 
                 return;
 
