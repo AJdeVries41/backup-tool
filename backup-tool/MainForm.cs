@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 namespace backup_tool
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private FolderBrowserDialog sourceFolderDialog;
         private FolderBrowserDialog targetFolderDialog;
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             AllocConsole();
@@ -19,13 +19,7 @@ namespace backup_tool
             this.targetFolderDialog = new FolderBrowserDialog();
         }
 
-        //This is to be able to use the console while running the application
-        //(in order to print values to debug)
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
-
-        private void button1_Click(object sender, EventArgs e)
+        private void sourceFolderButton_Click(object sender, EventArgs e)
         {
             DialogResult result = this.sourceFolderDialog.ShowDialog();
             if (result == DialogResult.OK)
@@ -47,24 +41,19 @@ namespace backup_tool
         {
             string sourcePath = this.sourceFolderTextbox.Text;
             string destPath = this.targetFolderTextbox.Text;
-            //recursively print all files from the source folder
             if (Directory.Exists(sourcePath) && Directory.Exists(destPath))
             {
                 var fileList = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories);
                 var fileInfoList = fileList.Select(x => new FileInfo(x)).ToList();
-
-                
                 var exts = FileUtils.GetExtensions(fileList);
                 Console.WriteLine($"There are {exts.Count} unique file types in {sourcePath}");
                 foreach ( var ext in exts )
                 {
                     Console.WriteLine($"{ext}");
                 }
+                ExtensionListForm frm2 = new ExtensionListForm(sourcePath, destPath, fileInfoList);
 
-                var sortedExtsBySize = FileUtils.ExtensionToFilesize(fileInfoList);
-
-
-                Form2 frm2 = new Form2(sortedExtsBySize);
+                frm2.ShowDialog();
 
                 return;
 
@@ -73,31 +62,16 @@ namespace backup_tool
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            string sourceFolderExample = @"C:\Users\AJ\Documents\tudelft";
-            string destFolderExample = @"C:\Users\AJ\Documents\backups";
-            this.sourceFolderTextbox.Text = sourceFolderExample;
-            this.targetFolderTextbox.Text = destFolderExample;
-            if (Directory.Exists(sourceFolderExample) && Directory.Exists(destFolderExample))
-            {
-                var fileList = Directory.EnumerateFiles(sourceFolderExample, "*", SearchOption.AllDirectories);
-                var fileInfoList = fileList.Select(x => new FileInfo(x)).ToList();
+            this.sourceFolderTextbox.Text = @"C:\Users\AJ\Documents\tudelft";
+            this.targetFolderTextbox.Text = @"C:\Users\AJ\Documents\backups";
 
-
-                var exts = FileUtils.GetExtensions(fileList);
-                Console.WriteLine($"There are {exts.Count} unique file types in {sourceFolderExample}");
-                foreach (var ext in exts)
-                {
-                    Console.WriteLine($"{ext}");
-                }
-
-                var sortedExtsBySize = FileUtils.ExtensionToFilesize(fileInfoList);
-
-
-                Form2 frm2 = new Form2(sortedExtsBySize);
-
-                return;
-
-            }
+            runButton_Click(sender, e);
         }
+
+        //This is to be able to use the console while running the application
+        //(in order to print values to debug)
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
     }
 }

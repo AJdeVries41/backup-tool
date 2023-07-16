@@ -1,6 +1,6 @@
 ﻿namespace backup_tool
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -45,12 +45,13 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Select Source Folder...";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.sourceFolderButton_Click);
             // 
             // sourceFolderTextbox
             // 
             this.sourceFolderTextbox.Location = new System.Drawing.Point(98, 147);
             this.sourceFolderTextbox.Name = "sourceFolderTextbox";
+            this.sourceFolderTextbox.ReadOnly = true;
             this.sourceFolderTextbox.Size = new System.Drawing.Size(164, 22);
             this.sourceFolderTextbox.TabIndex = 1;
             // 
@@ -78,6 +79,7 @@
             // 
             this.targetFolderTextbox.Location = new System.Drawing.Point(516, 147);
             this.targetFolderTextbox.Name = "targetFolderTextbox";
+            this.targetFolderTextbox.ReadOnly = true;
             this.targetFolderTextbox.Size = new System.Drawing.Size(158, 22);
             this.targetFolderTextbox.TabIndex = 4;
             // 
@@ -91,7 +93,7 @@
             this.testButton.UseVisualStyleBackColor = true;
             this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -102,7 +104,7 @@
             this.Controls.Add(this.targetFolderButton);
             this.Controls.Add(this.sourceFolderTextbox);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();

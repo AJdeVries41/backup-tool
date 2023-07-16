@@ -9,36 +9,52 @@ namespace backup_tool
 {
     internal class FileUtils
     {
-        public static void CopyToDirectory(string source, string destination)
+        public static void CopyToDirectory(string source, string destination, List<String> finalFileTypes)
         {
             var sourceDir = new DirectoryInfo(source);
             if (!sourceDir.Exists)
             {
-                throw new DirectoryNotFoundException($"{source} does not exist");
+                throw new DirectoryNotFoundException($"The directory {source} does not exist");
             }
             DirectoryInfo[] subDirs = sourceDir.GetDirectories();
             if (!Directory.Exists(destination))
             {
+                Console.WriteLine($"Destination directory {destination} does not exist, creating it...");
                 Directory.CreateDirectory(destination);
             }
 
             foreach (FileInfo file in sourceDir.GetFiles())
             {
+                
+                string ext = Path.GetExtension(file.Name);
                 string targetFilePath = Path.Combine(destination, file.Name);
-                //Default option is to allow overwriting with the new version
-                file.CopyTo(targetFilePath, true);
+                if (finalFileTypes.Contains(ext) && !File.Exists(targetFilePath))
+                {
+                    Console.WriteLine($"Copying {file.Name}...");
+                    file.CopyTo(targetFilePath);
+                }
+                else if (finalFileTypes.Contains(ext) && File.Exists(targetFilePath))
+                {
+                    Console.WriteLine($"Skipping {file.Name}");
+                    continue;
+                }
+                else
+                {
+                    //If the file is not a final file type, we must copy it no matter what
+                    Console.WriteLine($"Creating or overwriting {file.Name}...");
+                    file.CopyTo(targetFilePath, true);
+                }
             }
 
             //Recursively copy each subdirectory to the destination folder
-
             foreach (DirectoryInfo subDir in subDirs)
             {
                 string destSubdirLoc = Path.Combine(destination, subDir.Name);
-                CopyToDirectory(subDir.FullName, destSubdirLoc);
+                CopyToDirectory(subDir.FullName, destSubdirLoc, finalFileTypes);
             }
         }
 
-        public static List<KeyValuePair<string, long>> ExtensionToFilesize(List<FileInfo> files)
+        public static List<KeyValuePair<string, long>> ExtensionToFilesizeMapping(List<FileInfo> files)
         {
             Dictionary<string, long> result = new Dictionary<string, long>();
             foreach (var file in files)

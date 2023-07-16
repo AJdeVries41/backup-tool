@@ -1,6 +1,6 @@
 ﻿namespace backup_tool
 {
-    partial class Form2
+    partial class ExtensionListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -60,7 +60,7 @@
             this.submitButton.UseVisualStyleBackColor = true;
             this.submitButton.Click += new System.EventHandler(this.submitButton_Click);
             // 
-            // Form2
+            // ExtensionListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -68,8 +68,8 @@
             this.Controls.Add(this.submitButton);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.exts);
-            this.Name = "Form2";
-            this.Text = "Form2";
+            this.Name = "ExtensionListForm";
+            this.Text = "ExtensionListForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 
