@@ -17,12 +17,12 @@ namespace backup_tool
     {
         string sourceDir;
         string destDir;
-        List<FileInfo> fileList;
+        int amountOfFiles;
         public ExtensionListForm(string sourceDir, string destDir, List<FileInfo> fileList)
         {
             this.sourceDir = sourceDir;
             this.destDir = destDir;
-            this.fileList = fileList;
+            this.amountOfFiles = fileList.Count;
             InitializeComponent();
 
             List<KeyValuePair<string, long>> sortedExtsBySize = FileUtils.ExtensionToFilesizeMapping(fileList);
@@ -51,18 +51,10 @@ namespace backup_tool
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            //Copy all the files from the source folder to the dest folder
             var finalFileExtensions = processCheckedExtensions(this.exts.CheckedItems);
-            
-            var timer = Stopwatch.StartNew();
+            WaitForm wf = new WaitForm(this.sourceDir, this.destDir, finalFileExtensions, this.amountOfFiles);
 
-            WaitForm wf = new WaitForm();
             wf.ShowDialog();
-            FileUtils.CopyToDirectory(this.sourceDir, destDir, finalFileExtensions);
-            wf.Close();
-
-            timer.Stop();
-            Console.WriteLine($"Execution time to copy all the files: {timer.ElapsedMilliseconds} ms");
             
             return;
         }

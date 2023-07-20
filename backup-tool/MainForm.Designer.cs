@@ -30,11 +30,11 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.sourceFolderTextbox = new System.Windows.Forms.TextBox();
             this.targetFolderButton = new System.Windows.Forms.Button();
             this.runButton = new System.Windows.Forms.Button();
-            this.targetFolderTextbox = new System.Windows.Forms.TextBox();
             this.testButton = new System.Windows.Forms.Button();
+            this.sourceFolderLabel = new System.Windows.Forms.Label();
+            this.destFolderLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -46,14 +46,6 @@
             this.button1.Text = "Select Source Folder...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.sourceFolderButton_Click);
-            // 
-            // sourceFolderTextbox
-            // 
-            this.sourceFolderTextbox.Location = new System.Drawing.Point(98, 147);
-            this.sourceFolderTextbox.Name = "sourceFolderTextbox";
-            this.sourceFolderTextbox.ReadOnly = true;
-            this.sourceFolderTextbox.Size = new System.Drawing.Size(164, 22);
-            this.sourceFolderTextbox.TabIndex = 1;
             // 
             // targetFolderButton
             // 
@@ -75,14 +67,6 @@
             this.runButton.UseVisualStyleBackColor = true;
             this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
-            // targetFolderTextbox
-            // 
-            this.targetFolderTextbox.Location = new System.Drawing.Point(516, 147);
-            this.targetFolderTextbox.Name = "targetFolderTextbox";
-            this.targetFolderTextbox.ReadOnly = true;
-            this.targetFolderTextbox.Size = new System.Drawing.Size(158, 22);
-            this.targetFolderTextbox.TabIndex = 4;
-            // 
             // testButton
             // 
             this.testButton.Location = new System.Drawing.Point(329, 48);
@@ -93,16 +77,38 @@
             this.testButton.UseVisualStyleBackColor = true;
             this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
+            // sourceFolderLabel
+            // 
+            this.sourceFolderLabel.AutoSize = true;
+            this.sourceFolderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sourceFolderLabel.Location = new System.Drawing.Point(93, 147);
+            this.sourceFolderLabel.MaximumSize = new System.Drawing.Size(200, 0);
+            this.sourceFolderLabel.Name = "sourceFolderLabel";
+            this.sourceFolderLabel.Size = new System.Drawing.Size(176, 50);
+            this.sourceFolderLabel.TabIndex = 6;
+            this.sourceFolderLabel.Text = "<Source folder will appear here>";
+            // 
+            // destFolderLabel
+            // 
+            this.destFolderLabel.AutoSize = true;
+            this.destFolderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.destFolderLabel.Location = new System.Drawing.Point(511, 147);
+            this.destFolderLabel.MaximumSize = new System.Drawing.Size(200, 0);
+            this.destFolderLabel.Name = "destFolderLabel";
+            this.destFolderLabel.Size = new System.Drawing.Size(179, 50);
+            this.destFolderLabel.TabIndex = 7;
+            this.destFolderLabel.Text = "<Destination folder will appear here>";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 453);
+            this.Controls.Add(this.destFolderLabel);
+            this.Controls.Add(this.sourceFolderLabel);
             this.Controls.Add(this.testButton);
-            this.Controls.Add(this.targetFolderTextbox);
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.targetFolderButton);
-            this.Controls.Add(this.sourceFolderTextbox);
             this.Controls.Add(this.button1);
             this.Name = "MainForm";
             this.Text = "Form1";
@@ -114,10 +120,10 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox sourceFolderTextbox;
         private System.Windows.Forms.Button targetFolderButton;
         private System.Windows.Forms.Button runButton;
-        private System.Windows.Forms.TextBox targetFolderTextbox;
         private System.Windows.Forms.Button testButton;
+        private System.Windows.Forms.Label sourceFolderLabel;
+        private System.Windows.Forms.Label destFolderLabel;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,23 +10,23 @@ namespace backup_tool
 {
     internal class FileUtils
     {
-        public static void CopyToDirectory(string source, string destination, List<String> finalFileTypes)
+        public static void CopyToDirectory(string source, string destination, List<String> finalFileTypes, 
+            int totalAmountOfFiles, int completedPercentage, BackgroundWorker worker)
         {
             var sourceDir = new DirectoryInfo(source);
             if (!sourceDir.Exists)
             {
                 throw new DirectoryNotFoundException($"The directory {source} does not exist");
             }
-            DirectoryInfo[] subDirs = sourceDir.GetDirectories();
             if (!Directory.Exists(destination))
             {
                 Console.WriteLine($"Destination directory {destination} does not exist, creating it...");
                 Directory.CreateDirectory(destination);
             }
 
-            foreach (FileInfo file in sourceDir.GetFiles())
+            var fileArr = sourceDir.GetFiles();
+            foreach (FileInfo file in fileArr)
             {
-                
                 string ext = Path.GetExtension(file.Name);
                 string targetFilePath = Path.Combine(destination, file.Name);
                 if (finalFileTypes.Contains(ext) && !File.Exists(targetFilePath))
@@ -45,12 +46,20 @@ namespace backup_tool
                     file.CopyTo(targetFilePath, true);
                 }
             }
+            int fileCount = fileArr.Length;
+            double percentageIncrease = ((double)fileCount / (double)totalAmountOfFiles) * 100;
+            //floating point errors probably
+            completedPercentage += (int) Math.Round(percentageIncrease);
 
+            //Report progress to worker to update load bar
+            worker.ReportProgress(completedPercentage);
+
+            DirectoryInfo[] subDirs = sourceDir.GetDirectories();
             //Recursively copy each subdirectory to the destination folder
             foreach (DirectoryInfo subDir in subDirs)
             {
                 string destSubdirLoc = Path.Combine(destination, subDir.Name);
-                CopyToDirectory(subDir.FullName, destSubdirLoc, finalFileTypes);
+                CopyToDirectory(subDir.FullName, destSubdirLoc, finalFileTypes, totalAmountOfFiles, completedPercentage, worker);
             }
         }
 

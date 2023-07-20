@@ -24,7 +24,7 @@ namespace backup_tool
             DialogResult result = this.sourceFolderDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                this.sourceFolderTextbox.Text = this.sourceFolderDialog.SelectedPath;
+                this.sourceFolderLabel.Text = this.sourceFolderDialog.SelectedPath;
             }
         }
 
@@ -33,14 +33,14 @@ namespace backup_tool
             DialogResult result = this.targetFolderDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                this.targetFolderTextbox.Text = this.targetFolderDialog.SelectedPath;
+                this.destFolderLabel.Text = this.targetFolderDialog.SelectedPath;
             }
         }
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            string sourcePath = this.sourceFolderTextbox.Text;
-            string destPath = this.targetFolderTextbox.Text;
+            string sourcePath = this.sourceFolderLabel.Text;
+            string destPath = this.destFolderLabel.Text;
             if (Directory.Exists(sourcePath) && Directory.Exists(destPath))
             {
                 var fileList = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories);
@@ -62,8 +62,8 @@ namespace backup_tool
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            this.sourceFolderTextbox.Text = @"C:\Users\AJ\Documents\tudelft";
-            this.targetFolderTextbox.Text = @"C:\Users\AJ\Documents\backups";
+            this.sourceFolderLabel.Text = @"C:\Users\AJ\Documents\tudelft";
+            this.destFolderLabel.Text = @"C:\Users\AJ\Documents\backups";
 
             runButton_Click(sender, e);
         }
