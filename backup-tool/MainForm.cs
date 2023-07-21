@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,31 +8,35 @@ namespace backup_tool
 {
     public partial class MainForm : Form
     {
-        private FolderBrowserDialog sourceFolderDialog;
-        private FolderBrowserDialog targetFolderDialog;
+
+        private FolderPicker sourceFolderDialog;
+        private FolderPicker destFolderDialog;
+
+       
         public MainForm()
         {
             InitializeComponent();
             //AllocConsole();
-            this.sourceFolderDialog = new FolderBrowserDialog();
-            this.targetFolderDialog = new FolderBrowserDialog();
+
+            this.sourceFolderDialog = new FolderPicker();
+            this.destFolderDialog = new FolderPicker();
         }
 
         private void sourceFolderButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = this.sourceFolderDialog.ShowDialog();
-            if (result == DialogResult.OK)
+            sourceFolderDialog.InputPath = @"C:\Users";
+            if (sourceFolderDialog.ShowDialog(IntPtr.Zero) == true)
             {
-                this.sourceFolderLabel.Text = this.sourceFolderDialog.SelectedPath;
+                this.sourceFolderLabel.Text = sourceFolderDialog.ResultPath;
             }
         }
 
         private void targetFolderButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = this.targetFolderDialog.ShowDialog();
-            if (result == DialogResult.OK)
+            destFolderDialog.InputPath = @"C:\Users";
+            if (destFolderDialog.ShowDialog(IntPtr.Zero) == true)
             {
-                this.destFolderLabel.Text = this.targetFolderDialog.SelectedPath;
+                this.destFolderLabel.Text = destFolderDialog.ResultPath;
             }
         }
 

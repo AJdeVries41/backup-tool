@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="FileCopier.cs" />
     <Compile Include="FileUtils.cs" />
+    <Compile Include="FolderPicker.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

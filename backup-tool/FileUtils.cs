@@ -10,7 +10,6 @@ namespace backup_tool
 {
     internal class FileUtils
     {
-        
         public static List<KeyValuePair<string, long>> ExtensionToFilesizeMapping(List<FileInfo> files)
         {
             Dictionary<string, long> result = new Dictionary<string, long>();
