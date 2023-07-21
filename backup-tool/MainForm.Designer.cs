@@ -111,7 +111,7 @@
             this.Controls.Add(this.targetFolderButton);
             this.Controls.Add(this.button1);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "backup-tool";
             this.ResumeLayout(false);
             this.PerformLayout();
 

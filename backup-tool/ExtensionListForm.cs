@@ -20,21 +20,27 @@ namespace backup_tool
         int amountOfFiles;
         public ExtensionListForm(string sourceDir, string destDir, List<FileInfo> fileList)
         {
-            this.sourceDir = sourceDir;
-            this.destDir = destDir;
-            this.amountOfFiles = fileList.Count;
             InitializeComponent();
 
+            this.sourceDir = sourceDir;
+            this.label1.Text = $"Select all file types within \"{this.sourceDir}\" that are final";
+            this.destDir = destDir;
+            this.amountOfFiles = fileList.Count;
+
+            this.ConcstuctCheckedListBox(fileList);
+        }
+
+        public void ConcstuctCheckedListBox(List<FileInfo> fileList)
+        {
             List<KeyValuePair<string, long>> sortedExtsBySize = FileUtils.ExtensionToFilesizeMapping(fileList);
             foreach (var pair in sortedExtsBySize)
             {
                 string sizeString = $"\t({FileUtils.ByteToGB(pair.Value).ToString()} GB)";
-                this.exts.Items.Add(pair.Key+sizeString, false);
+                this.exts.Items.Add(pair.Key + sizeString, false);
             }
-            this.Controls.Add(exts);
         }
 
-        public List<string> processCheckedExtensions(CheckedListBox.CheckedItemCollection checkedList)
+        public List<string> ProcessCheckedExtensions(CheckedListBox.CheckedItemCollection checkedList)
         {
             var toList = checkedList.Cast<string>().ToList();
             var result = new List<string>();
@@ -51,7 +57,7 @@ namespace backup_tool
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            var finalFileExtensions = processCheckedExtensions(this.exts.CheckedItems);
+            var finalFileExtensions = ProcessCheckedExtensions(this.exts.CheckedItems);
             WaitForm wf = new WaitForm(this.sourceDir, this.destDir, finalFileExtensions, this.amountOfFiles);
 
             wf.ShowDialog();

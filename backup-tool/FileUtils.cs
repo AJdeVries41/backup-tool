@@ -10,59 +10,7 @@ namespace backup_tool
 {
     internal class FileUtils
     {
-        public static void CopyToDirectory(string source, string destination, List<String> finalFileTypes, 
-            int totalAmountOfFiles, int completedPercentage, BackgroundWorker worker)
-        {
-            var sourceDir = new DirectoryInfo(source);
-            if (!sourceDir.Exists)
-            {
-                throw new DirectoryNotFoundException($"The directory {source} does not exist");
-            }
-            if (!Directory.Exists(destination))
-            {
-                Console.WriteLine($"Destination directory {destination} does not exist, creating it...");
-                Directory.CreateDirectory(destination);
-            }
-
-            var fileArr = sourceDir.GetFiles();
-            foreach (FileInfo file in fileArr)
-            {
-                string ext = Path.GetExtension(file.Name);
-                string targetFilePath = Path.Combine(destination, file.Name);
-                if (finalFileTypes.Contains(ext) && !File.Exists(targetFilePath))
-                {
-                    Console.WriteLine($"Copying {file.Name}...");
-                    file.CopyTo(targetFilePath);
-                }
-                else if (finalFileTypes.Contains(ext) && File.Exists(targetFilePath))
-                {
-                    Console.WriteLine($"Skipping {file.Name}");
-                    continue;
-                }
-                else
-                {
-                    //If the file is not a final file type, we must copy it no matter what
-                    Console.WriteLine($"Creating or overwriting {file.Name}...");
-                    file.CopyTo(targetFilePath, true);
-                }
-            }
-            int fileCount = fileArr.Length;
-            double percentageIncrease = ((double)fileCount / (double)totalAmountOfFiles) * 100;
-            //floating point errors probably
-            completedPercentage += (int) Math.Round(percentageIncrease);
-
-            //Report progress to worker to update load bar
-            worker.ReportProgress(completedPercentage);
-
-            DirectoryInfo[] subDirs = sourceDir.GetDirectories();
-            //Recursively copy each subdirectory to the destination folder
-            foreach (DirectoryInfo subDir in subDirs)
-            {
-                string destSubdirLoc = Path.Combine(destination, subDir.Name);
-                CopyToDirectory(subDir.FullName, destSubdirLoc, finalFileTypes, totalAmountOfFiles, completedPercentage, worker);
-            }
-        }
-
+        
         public static List<KeyValuePair<string, long>> ExtensionToFilesizeMapping(List<FileInfo> files)
         {
             Dictionary<string, long> result = new Dictionary<string, long>();

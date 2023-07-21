@@ -66,7 +66,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
             this.Name = "WaitForm";
-            this.Text = "WaitForm";
+            this.Text = "backup-tool";
             this.ResumeLayout(false);
             this.PerformLayout();
 

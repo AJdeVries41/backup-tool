@@ -32,9 +32,10 @@ namespace backup_tool
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
+            var c = new FileCopier(this.finalFileExtensions, this.totalAmountOfFiles, worker);
+
             //do the expensive operation
-            FileUtils.CopyToDirectory(this.sourceDir, this.destDir, this.finalFileExtensions, this.totalAmountOfFiles, 
-                0, worker);
+            c.CopyToDirectory(this.sourceDir, this.destDir);
 
         }
 
