@@ -14,7 +14,7 @@ namespace backup_tool
         public MainForm()
         {
             InitializeComponent();
-            AllocConsole();
+            //AllocConsole();
             this.sourceFolderDialog = new FolderBrowserDialog();
             this.targetFolderDialog = new FolderBrowserDialog();
         }
@@ -46,12 +46,6 @@ namespace backup_tool
             {
                 var fileList = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories);
                 var fileInfoList = fileList.Select(x => new FileInfo(x)).ToList();
-                var exts = FileUtils.GetExtensions(fileList);
-                Console.WriteLine($"There are {exts.Count} unique file types in {sourcePath}");
-                foreach ( var ext in exts )
-                {
-                    Console.WriteLine($"{ext}");
-                }
                 ExtensionListForm frm2 = new ExtensionListForm(sourcePath, destPath, fileInfoList);
 
                 frm2.ShowDialog();
@@ -101,13 +95,6 @@ namespace backup_tool
             }
             //The destination folder is allowed to not exist, we create it in "FileCopier" if necessary
             return 0;            
-        }
-
-        private void testButton_Click(object sender, EventArgs e)
-        {
-            this.sourceFolderLabel.Text = @"C:\Users\AJ\Documents\tudelft\CSE2215 Computer Graphics";
-            this.destFolderLabel.Text = @"C:\Users\AJ\Documents\backups\computer_graphics_backup";
-            runButton_Click(sender, e);
         }
 
         //This is to be able to use the console while running the application

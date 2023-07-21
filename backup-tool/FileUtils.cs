@@ -32,23 +32,10 @@ namespace backup_tool
 
         public static double ByteToGB(long bytes)
         {
-            double res = (bytes / (1e9));
+            double res = ((double) bytes / (double) (1e9));
             double rounded = Math.Round(res, 2);
             return rounded;
         }
 
-        public static List<string> GetExtensions(IEnumerable<string> fileList)
-        {
-            var result = new List<string>();
-            foreach (string file in fileList)
-            {
-                var ext = Path.GetExtension(file);
-                if (!result.Contains(ext))
-                {
-                    result.Add(ext);
-                }
-            }
-            return result;
-        }
     }
 }

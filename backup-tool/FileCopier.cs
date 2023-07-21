@@ -28,7 +28,6 @@ namespace backup_tool
             }
             if (!Directory.Exists(destination))
             {
-                Console.WriteLine($"Destination directory {destination} does not exist, creating it...");
                 Directory.CreateDirectory(destination);
             }
 
@@ -39,35 +38,33 @@ namespace backup_tool
                 string targetFilePath = Path.Combine(destination, file.Name);
                 if (finalFileTypes.Contains(ext) && !File.Exists(targetFilePath))
                 {
-                    Console.WriteLine($"Copying {file.Name}...");
                     file.CopyTo(targetFilePath);
                 }
                 else if (finalFileTypes.Contains(ext) && File.Exists(targetFilePath))
                 {
-                    Console.WriteLine($"Skipping {file.Name}");
                     continue;
                 }
                 else
                 {
                     //If the file is not a final file type, we must copy it no matter what
-                    Console.WriteLine($"Creating or overwriting {file.Name}...");
                     file.CopyTo(targetFilePath, true);
                 }
             }
+            //Loading bar progress is updated per block of files, I could also try per file...
             int rootFileCount = fileArr.Length;
             double percentageIncrease = ((double)rootFileCount / (double)totalAmountOfFiles) * 100;
-            //floating point errors probably
+            //floating point errors probably, IDK it seems to work fine
             this.completedPercentage += (int)Math.Round(percentageIncrease);
 
             //Report progress to worker to update load bar
             this.worker.ReportProgress(this.completedPercentage);
 
-            DirectoryInfo[] subDirs = sourceDir.GetDirectories();
+            DirectoryInfo[] sourceSubDirs = sourceDir.GetDirectories();
             //Recursively copy each subdirectory to the destination folder
-            foreach (DirectoryInfo subDir in subDirs)
+            foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
             {
-                string destSubdirLoc = Path.Combine(destination, subDir.Name);
-                this.CopyToDirectory(subDir.FullName, destSubdirLoc);
+                string destSubDir = Path.Combine(destination, sourceSubDir.Name);
+                this.CopyToDirectory(sourceSubDir.FullName, destSubDir);
             }
         }
     }

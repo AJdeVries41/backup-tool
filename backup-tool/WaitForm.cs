@@ -16,6 +16,7 @@ namespace backup_tool
         string destDir;
         List<string> finalFileExtensions;
         int totalAmountOfFiles;
+        long finalExecutionTime;
         public WaitForm(string sourceDir, string destDir, List<string> finalFileExtensions, int totalAmountOfFiles)
         {
             InitializeComponent();
@@ -25,6 +26,9 @@ namespace backup_tool
             this.finalFileExtensions = finalFileExtensions;
             this.totalAmountOfFiles = totalAmountOfFiles;
 
+            //Reset the boilerplate text which I gave it in the designer
+            this.label2.Text = "";
+
             this.backgroundWorker1.RunWorkerAsync();
         }
 
@@ -33,10 +37,13 @@ namespace backup_tool
             BackgroundWorker worker = sender as BackgroundWorker;
 
             var c = new FileCopier(this.finalFileExtensions, this.totalAmountOfFiles, worker);
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
             //do the expensive operation
             c.CopyToDirectory(this.sourceDir, this.destDir);
 
+            stopwatch.Stop();
+            this.finalExecutionTime = stopwatch.ElapsedMilliseconds;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -56,7 +63,8 @@ namespace backup_tool
             }
             else
             {
-                this.label1.Text = "*All done*";
+                this.label1.Text = "*All done* (You can now close the application)";
+                this.label2.Text = $"Final execution time: {this.finalExecutionTime} ms";
             }
         }
     }

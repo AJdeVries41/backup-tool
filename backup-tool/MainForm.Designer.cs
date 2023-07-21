@@ -32,7 +32,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.targetFolderButton = new System.Windows.Forms.Button();
             this.runButton = new System.Windows.Forms.Button();
-            this.testButton = new System.Windows.Forms.Button();
             this.sourceFolderLabel = new System.Windows.Forms.Label();
             this.destFolderLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -67,16 +66,6 @@
             this.runButton.UseVisualStyleBackColor = true;
             this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
-            // testButton
-            // 
-            this.testButton.Location = new System.Drawing.Point(329, 48);
-            this.testButton.Name = "testButton";
-            this.testButton.Size = new System.Drawing.Size(118, 34);
-            this.testButton.TabIndex = 5;
-            this.testButton.Text = "TEST";
-            this.testButton.UseVisualStyleBackColor = true;
-            this.testButton.Click += new System.EventHandler(this.testButton_Click);
-            // 
             // sourceFolderLabel
             // 
             this.sourceFolderLabel.AutoSize = true;
@@ -106,10 +95,10 @@
             this.ClientSize = new System.Drawing.Size(782, 453);
             this.Controls.Add(this.destFolderLabel);
             this.Controls.Add(this.sourceFolderLabel);
-            this.Controls.Add(this.testButton);
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.targetFolderButton);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
             this.Text = "backup-tool";
             this.ResumeLayout(false);
@@ -122,7 +111,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button targetFolderButton;
         private System.Windows.Forms.Button runButton;
-        private System.Windows.Forms.Button testButton;
         private System.Windows.Forms.Label sourceFolderLabel;
         private System.Windows.Forms.Label destFolderLabel;
     }

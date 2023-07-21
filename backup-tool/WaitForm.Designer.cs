@@ -31,11 +31,12 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(105, 223);
+            this.progressBar1.Location = new System.Drawing.Point(105, 245);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(435, 29);
             this.progressBar1.TabIndex = 0;
@@ -44,9 +45,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(133, 133);
+            this.label1.Location = new System.Drawing.Point(169, 27);
+            this.label1.MaximumSize = new System.Drawing.Size(300, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(372, 36);
+            this.label1.Size = new System.Drawing.Size(295, 72);
             this.label1.TabIndex = 2;
             this.label1.Text = "Please wait, copying files...";
             // 
@@ -58,13 +60,24 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(102, 302);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(273, 16);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "<execution time appears here when finished>";
+            // 
             // WaitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(651, 353);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "WaitForm";
             this.Text = "backup-tool";
             this.ResumeLayout(false);
@@ -77,5 +90,6 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Label label2;
     }
 }
