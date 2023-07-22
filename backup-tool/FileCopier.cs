@@ -53,7 +53,6 @@ namespace backup_tool
             //Loading bar progress is updated per block of files, I could also try per file...
             int rootFileCount = fileArr.Length;
             double percentageIncrease = ((double)rootFileCount / (double)totalAmountOfFiles) * 100;
-            //floating point errors probably, IDK it seems to work fine
             this.completedPercentage += (int)Math.Round(percentageIncrease);
 
             //Report progress to worker to update load bar
@@ -63,8 +62,12 @@ namespace backup_tool
             //Recursively copy each subdirectory to the destination folder
             foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
             {
-                string destSubDir = Path.Combine(destination, sourceSubDir.Name);
-                this.CopyToDirectory(sourceSubDir.FullName, destSubDir);
+                //Again, ignore any subDirs that are hidden
+                if (!((sourceSubDir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
+                {
+                    string destSubDir = Path.Combine(destination, sourceSubDir.Name);
+                    this.CopyToDirectory(sourceSubDir.FullName, destSubDir);
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,11 +20,14 @@ namespace backup_tool
             //AllocConsole();
 
             this.sourceFolderDialog = new FolderPicker();
+            this.sourceFolderDialog.Multiselect = false;
             this.destFolderDialog = new FolderPicker();
+            this.destFolderDialog.Multiselect = false;
         }
 
         private void sourceFolderButton_Click(object sender, EventArgs e)
         {
+            this.sourceFolderDialog.ResetResults();
             sourceFolderDialog.InputPath = @"C:\Users";
             if (sourceFolderDialog.ShowDialog(IntPtr.Zero) == true)
             {
@@ -33,6 +37,7 @@ namespace backup_tool
 
         private void targetFolderButton_Click(object sender, EventArgs e)
         {
+            this.destFolderDialog.ResetResults();
             destFolderDialog.InputPath = @"C:\Users";
             if (destFolderDialog.ShowDialog(IntPtr.Zero) == true)
             {
@@ -47,8 +52,7 @@ namespace backup_tool
             int invalidPathChecks = InvalidPathHandling(sourcePath, destPath);
             if (invalidPathChecks == 0)
             {
-                var fileList = Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories);
-                var fileInfoList = fileList.Select(x => new FileInfo(x)).ToList();
+                var fileInfoList = FileUtils.GetFileInfoList(new DirectoryInfo(sourcePath));
                 ExtensionListForm frm2 = new ExtensionListForm(sourcePath, destPath, fileInfoList);
 
                 frm2.ShowDialog();

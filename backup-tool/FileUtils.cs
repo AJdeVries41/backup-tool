@@ -10,6 +10,27 @@ namespace backup_tool
 {
     internal class FileUtils
     {
+        /// <summary>
+        /// Returns every file within a rootfolder as well as files within subdirectories of rootfolder
+        /// Ignore any folders that are hidden
+        /// </summary>
+        /// <param name="rootFolder"></param>
+        /// <returns></returns>
+        public static List<FileInfo> GetFileInfoList(DirectoryInfo rootFolder)
+        {
+            var fileList = rootFolder.GetFiles().ToList();
+            var subFiles = new List<FileInfo>();
+            foreach (DirectoryInfo subDir in rootFolder.GetDirectories())
+            {
+                //Ignore any directories that are hidden
+                if (!((subDir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
+                {
+                    subFiles.AddRange(GetFileInfoList(subDir));
+                }
+            }
+            fileList.AddRange(subFiles);
+            return fileList;
+        }
         public static List<KeyValuePair<string, long>> ExtensionToFilesizeMapping(List<FileInfo> files)
         {
             Dictionary<string, long> result = new Dictionary<string, long>();

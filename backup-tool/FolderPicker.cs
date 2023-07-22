@@ -25,6 +25,12 @@ namespace backup_tool
         public virtual string OkButtonLabel { get; set; }
         public virtual string FileNameLabel { get; set; }
 
+        public virtual void ResetResults()
+        {
+            this._resultPaths.Clear();
+            this._resultNames.Clear();
+        }
+
         protected virtual int SetOptions(int options)
         {
             if (ForceFileSystem)
