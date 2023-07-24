@@ -21,11 +21,13 @@ namespace backup_tool
             this.completedPercentage = 0.0;
             this.worker = worker;
             this.options = new EnumerationOptions();
+
+            this.options.AttributesToSkip = FileAttributes.System;
             this.options.IgnoreInaccessible = true;
             this.options.RecurseSubdirectories = false;
         }
 
-        public void CopyToDirectory(string source, string destination)
+        /*public void CopyToDirectory(string source, string destination)
         {
             var sourceDir = new DirectoryInfo(source);
             if (!sourceDir.Exists)
@@ -67,6 +69,64 @@ namespace backup_tool
                 string destSubDir = Path.Combine(destination, sourceSubDir.Name);
                 this.CopyToDirectory(sourceSubDir.FullName, destSubDir);
             }
+        }*/
+
+        /// <summary>
+        /// Copy all files and directories from source to destination
+        /// Requirement: source and destination both exist. Else, the method fails
+        /// </summary>
+        /// <param name="source">Source directory info</param>
+        /// <param name="destination">Destination directory info</param>
+        /// <exception cref="DirectoryNotFoundException">If source or destination does not exist</exception>
+        public void CopyToDirectory(DirectoryInfo source, DirectoryInfo destination)
+        {
+            if (!source.Exists)
+            {
+                throw new DirectoryNotFoundException($"The directory {source.FullName} does not exist");
+            }
+            if (!destination.Exists)
+            {
+                throw new DirectoryNotFoundException($"The directory {destination.FullName} does not exist");
+            }
+            var files = source.EnumerateFiles("*", this.options);
+            foreach (FileInfo file in files)
+            {
+                string ext = Path.GetExtension(file.Name);
+                string targetFilePath = Path.Combine(destination.FullName, file.Name);
+                if (finalFileTypes.Contains(ext) && !File.Exists(targetFilePath))
+                {
+                    file.CopyTo(targetFilePath);
+                }
+                else if (finalFileTypes.Contains(ext) && File.Exists(targetFilePath))
+                {
+                    continue;
+                }
+                else
+                {
+                    //If the file is not a final file type, we must copy it no matter what
+                    file.CopyTo(targetFilePath, true);
+                }
+            }
+
+            UpdateLoadingBar(files);
+
+            var sourceSubDirs = source.EnumerateDirectories("*", this.options);
+
+            //Recursively copy each subdirectory to the destination folder
+            foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
+            {
+                string destSubDirName = Path.Combine(destination.FullName, sourceSubDir.Name);
+                var destSubDir = new DirectoryInfo(destSubDirName);
+                if (!destSubDir.Exists)
+                {
+                    destSubDir.Create();
+                    //If the source subdir had any special attributes (such as being hidden)
+                    //the destination subdir should have those as well
+                    destSubDir.Attributes = sourceSubDir.Attributes;
+                }
+                this.CopyToDirectory(sourceSubDir, destSubDir);
+            }
+
         }
 
         private void UpdateLoadingBar(IEnumerable<FileInfo> files)

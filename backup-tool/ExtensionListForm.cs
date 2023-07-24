@@ -8,23 +8,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace backup_tool
 {
     public partial class ExtensionListForm : Form
     {
-        string sourceDir;
-        string destDir;
+        string sourceDirName;
+        string destDirName;
         int amountOfFiles;
-        public ExtensionListForm(string sourceDir, string destDir, IEnumerable<FileInfo> fileList)
+        public ExtensionListForm(string sourceDirName, string destDirName, IEnumerable<FileInfo> fileList)
         {
             InitializeComponent();
 
-            this.sourceDir = sourceDir;
-            this.label1.Text = $"Select all file types within \"{this.sourceDir}\" that are final";
-            this.destDir = destDir;
+            this.sourceDirName = sourceDirName;
+            this.label1.Text = $"Select all file types within \"{this.sourceDirName}\" that are final";
+            this.destDirName = destDirName;
             this.amountOfFiles = fileList.Count();
 
             this.ConcstuctCheckedListBox(fileList);
@@ -58,7 +57,7 @@ namespace backup_tool
         private void submitButton_Click(object sender, EventArgs e)
         {
             var finalFileExtensions = ProcessCheckedExtensions(this.exts.CheckedItems);
-            WaitForm wf = new WaitForm(this.sourceDir, this.destDir, finalFileExtensions, this.amountOfFiles);
+            WaitForm wf = new WaitForm(this.sourceDirName, this.destDirName, finalFileExtensions, this.amountOfFiles);
 
             wf.ShowDialog();
             

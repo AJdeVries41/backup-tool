@@ -19,8 +19,10 @@ namespace backup_tool
         public static IEnumerable<FileInfo> GetFileInfoList(string path)
         {
             var options = new EnumerationOptions();
+            options.AttributesToSkip = FileAttributes.System;
             options.IgnoreInaccessible = true;
             options.RecurseSubdirectories = true;
+
             var fileList = Directory.EnumerateFiles(path, "*", options)
                 .Select(f => new FileInfo(f)).ToList();
             return fileList;
