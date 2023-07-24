@@ -1,6 +1,5 @@
 ### Higher priority
-* The loading bar is bugged because of rounding doubles to ints in a weird way. This is especially noticeable when copying large directories. Try to fix that
-* The program does not copy hidden folders that you would want to be backed up like ".git" folders of code repositories
+* Program fails when encountering a file on the other drive it needs to overwrite, it will throw an UnauthorizedAccessException
 
 ### Lower priority
 * Nicer UI in general, the one currently works okay, but when first seeing the UI, it probably isn't really clear how to use the application
