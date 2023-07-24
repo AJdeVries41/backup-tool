@@ -28,61 +28,74 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            progressBar1 = new System.Windows.Forms.ProgressBar();
+            label1 = new System.Windows.Forms.Label();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            execTimeLabel = new System.Windows.Forms.Label();
+            loadPercentLabel = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(105, 245);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(435, 29);
-            this.progressBar1.TabIndex = 0;
+            progressBar1.Location = new System.Drawing.Point(102, 245);
+            progressBar1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new System.Drawing.Size(435, 36);
+            progressBar1.TabIndex = 0;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(169, 27);
-            this.label1.MaximumSize = new System.Drawing.Size(300, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(295, 72);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Please wait, copying files...";
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label1.Location = new System.Drawing.Point(169, 34);
+            label1.MaximumSize = new System.Drawing.Size(300, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(295, 72);
+            label1.TabIndex = 2;
+            label1.Text = "Please wait, copying files...";
             // 
             // backgroundWorker1
             // 
-            this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
+            backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
             // 
-            // label2
+            // execTimeLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(102, 302);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(273, 16);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "<execution time appears here when finished>";
+            execTimeLabel.AutoSize = true;
+            execTimeLabel.Location = new System.Drawing.Point(102, 378);
+            execTimeLabel.Name = "execTimeLabel";
+            execTimeLabel.Size = new System.Drawing.Size(312, 20);
+            execTimeLabel.TabIndex = 3;
+            execTimeLabel.Text = "<execution time appears here when finished>";
+            // 
+            // loadPercentLabel
+            // 
+            loadPercentLabel.AutoSize = true;
+            loadPercentLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            loadPercentLabel.Location = new System.Drawing.Point(288, 285);
+            loadPercentLabel.Name = "loadPercentLabel";
+            loadPercentLabel.Size = new System.Drawing.Size(132, 23);
+            loadPercentLabel.TabIndex = 4;
+            loadPercentLabel.Text = "progressPercent";
             // 
             // WaitForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(651, 353);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBar1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "WaitForm";
-            this.Text = "backup-tool";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(651, 441);
+            Controls.Add(loadPercentLabel);
+            Controls.Add(execTimeLabel);
+            Controls.Add(label1);
+            Controls.Add(progressBar1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Name = "WaitForm";
+            Text = "backup-tool";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -90,6 +103,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label execTimeLabel;
+        private System.Windows.Forms.Label loadPercentLabel;
     }
 }

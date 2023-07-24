@@ -52,7 +52,7 @@ namespace backup_tool
             int invalidPathChecks = InvalidPathHandling(sourcePath, destPath);
             if (invalidPathChecks == 0)
             {
-                var fileInfoList = FileUtils.GetFileInfoList(new DirectoryInfo(sourcePath));
+                var fileInfoList = FileUtils.GetFileInfoList(sourcePath);
                 ExtensionListForm frm2 = new ExtensionListForm(sourcePath, destPath, fileInfoList);
 
                 frm2.ShowDialog();

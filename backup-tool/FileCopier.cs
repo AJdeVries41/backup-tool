@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace backup_tool
 {
@@ -9,14 +11,18 @@ namespace backup_tool
     {
         List<string> finalFileTypes;
         int totalAmountOfFiles;
-        int completedPercentage;
+        double completedPercentage;
         BackgroundWorker worker;
+        EnumerationOptions options;
         public FileCopier(List<string> finalFileTypes, int totalAmountOfFiles, BackgroundWorker worker)
         {
             this.finalFileTypes = finalFileTypes;
             this.totalAmountOfFiles = totalAmountOfFiles;
-            this.completedPercentage = 0;
+            this.completedPercentage = 0.0;
             this.worker = worker;
+            this.options = new EnumerationOptions();
+            this.options.IgnoreInaccessible = true;
+            this.options.RecurseSubdirectories = false;
         }
 
         public void CopyToDirectory(string source, string destination)
@@ -31,8 +37,8 @@ namespace backup_tool
                 Directory.CreateDirectory(destination);
             }
 
-            var fileArr = sourceDir.GetFiles();
-            foreach (FileInfo file in fileArr)
+            var files = sourceDir.EnumerateFiles("*", this.options);
+            foreach (FileInfo file in files)
             {
                 string ext = Path.GetExtension(file.Name);
                 string targetFilePath = Path.Combine(destination, file.Name);
@@ -50,25 +56,30 @@ namespace backup_tool
                     file.CopyTo(targetFilePath, true);
                 }
             }
-            //Loading bar progress is updated per block of files, I could also try per file...
-            int rootFileCount = fileArr.Length;
-            double percentageIncrease = ((double)rootFileCount / (double)totalAmountOfFiles) * 100;
-            this.completedPercentage += (int)Math.Round(percentageIncrease);
 
-            //Report progress to worker to update load bar
-            this.worker.ReportProgress(this.completedPercentage);
+            UpdateLoadingBar(files);
 
-            DirectoryInfo[] sourceSubDirs = sourceDir.GetDirectories();
+            var sourceSubDirs = sourceDir.EnumerateDirectories("*", this.options);
+
             //Recursively copy each subdirectory to the destination folder
             foreach (DirectoryInfo sourceSubDir in sourceSubDirs)
             {
-                //Again, ignore any subDirs that are hidden
-                if (!((sourceSubDir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
-                {
-                    string destSubDir = Path.Combine(destination, sourceSubDir.Name);
-                    this.CopyToDirectory(sourceSubDir.FullName, destSubDir);
-                }
+                string destSubDir = Path.Combine(destination, sourceSubDir.Name);
+                this.CopyToDirectory(sourceSubDir.FullName, destSubDir);
             }
+        }
+
+        private void UpdateLoadingBar(IEnumerable<FileInfo> files)
+        {
+            //Loading bar progress is updated per block of files, I could also try per file...
+            int rootFileCount = files.Count();
+            double percentageIncrease = ((double)rootFileCount / (double)totalAmountOfFiles) * 100;
+            this.completedPercentage += percentageIncrease;
+
+            int forReporting = (int) Math.Floor(this.completedPercentage);
+
+            //Report progress to worker to update load bar
+            this.worker.ReportProgress(forReporting);
         }
     }
 }

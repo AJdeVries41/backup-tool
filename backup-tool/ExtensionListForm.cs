@@ -18,19 +18,19 @@ namespace backup_tool
         string sourceDir;
         string destDir;
         int amountOfFiles;
-        public ExtensionListForm(string sourceDir, string destDir, List<FileInfo> fileList)
+        public ExtensionListForm(string sourceDir, string destDir, IEnumerable<FileInfo> fileList)
         {
             InitializeComponent();
 
             this.sourceDir = sourceDir;
             this.label1.Text = $"Select all file types within \"{this.sourceDir}\" that are final";
             this.destDir = destDir;
-            this.amountOfFiles = fileList.Count;
+            this.amountOfFiles = fileList.Count();
 
             this.ConcstuctCheckedListBox(fileList);
         }
 
-        public void ConcstuctCheckedListBox(List<FileInfo> fileList)
+        public void ConcstuctCheckedListBox(IEnumerable<FileInfo> fileList)
         {
             List<KeyValuePair<string, long>> sortedExtsBySize = FileUtils.ExtensionToFilesizeMapping(fileList);
             foreach (var pair in sortedExtsBySize)

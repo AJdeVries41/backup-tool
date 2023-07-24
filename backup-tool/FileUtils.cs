@@ -14,24 +14,18 @@ namespace backup_tool
         /// Returns every file within a rootfolder as well as files within subdirectories of rootfolder
         /// Ignore any folders that are hidden
         /// </summary>
-        /// <param name="rootFolder"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public static List<FileInfo> GetFileInfoList(DirectoryInfo rootFolder)
+        public static IEnumerable<FileInfo> GetFileInfoList(string path)
         {
-            var fileList = rootFolder.GetFiles().ToList();
-            var subFiles = new List<FileInfo>();
-            foreach (DirectoryInfo subDir in rootFolder.GetDirectories())
-            {
-                //Ignore any directories that are hidden
-                if (!((subDir.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
-                {
-                    subFiles.AddRange(GetFileInfoList(subDir));
-                }
-            }
-            fileList.AddRange(subFiles);
+            var options = new EnumerationOptions();
+            options.IgnoreInaccessible = true;
+            options.RecurseSubdirectories = true;
+            var fileList = Directory.EnumerateFiles(path, "*", options)
+                .Select(f => new FileInfo(f)).ToList();
             return fileList;
         }
-        public static List<KeyValuePair<string, long>> ExtensionToFilesizeMapping(List<FileInfo> files)
+        public static List<KeyValuePair<string, long>> ExtensionToFilesizeMapping(IEnumerable<FileInfo> files)
         {
             Dictionary<string, long> result = new Dictionary<string, long>();
             foreach (var file in files)

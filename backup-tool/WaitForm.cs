@@ -20,14 +20,15 @@ namespace backup_tool
         public WaitForm(string sourceDir, string destDir, List<string> finalFileExtensions, int totalAmountOfFiles)
         {
             InitializeComponent();
-           
+
             this.sourceDir = sourceDir;
             this.destDir = destDir;
             this.finalFileExtensions = finalFileExtensions;
             this.totalAmountOfFiles = totalAmountOfFiles;
 
             //Reset the boilerplate text which I gave it in the designer
-            this.label2.Text = "";
+            this.execTimeLabel.Text = "";
+            this.loadPercentLabel.Text = "";
 
             this.backgroundWorker1.RunWorkerAsync();
         }
@@ -49,6 +50,7 @@ namespace backup_tool
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             this.progressBar1.Value = e.ProgressPercentage;
+            this.loadPercentLabel.Text = $"{e.ProgressPercentage}%";
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -64,7 +66,10 @@ namespace backup_tool
             else
             {
                 this.label1.Text = "*All done* (You can now close the application)";
-                this.label2.Text = $"Final execution time: {this.finalExecutionTime} ms";
+                this.execTimeLabel.Text = $"Final execution time: {this.finalExecutionTime} ms";
+                //IDK if this is necessary, but it might be
+                this.progressBar1.Value = 100;
+                this.loadPercentLabel.Text = $"100%";
             }
         }
     }
